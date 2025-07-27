@@ -138,8 +138,11 @@ verify_domain() {
 }
 
 return_menu() {
-    local sel=$1
-    if [ "$sel" -eq 0 ]; then
+    # Si no hubo argumento, $1 expandirá a cadena vacía en lugar de error
+    local sel="${1:-}"
+
+    # Si sel está vacío O es cero, volvemos al menú
+    if [[ -z "$sel" || "$sel" -eq 0 ]]; then
         main
     fi
 }
