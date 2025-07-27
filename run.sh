@@ -68,6 +68,7 @@ tn_list_containers() {
     local i=1
 
     while read -r name; do
+        # Extrae TODOS los host‑ports expuestos, sin filtrar por internal port
         mapfile -t ports < <(
             docker port "$name" |
                 awk -F '-> ' '/->/ {print $2}' |
@@ -78,8 +79,10 @@ tn_list_containers() {
         )
 
         for port in "${ports[@]}"; do
-            # Busca en Caddyfile si existe un reverse_proxy apuntando a este puerto
-            domain=$(awk -v port=":$port" '
+            # Busca un bloque con reverse_proxy NO comentado
+            # y descarta el bloque por defecto ":80"
+            domain=$(awk -v port=":${port}" '
+                # cuando abrimos un bloque {...}
                 /^\s*[^#].+\{/ {
                     in_block=1
                     line=$0
@@ -88,10 +91,13 @@ tn_list_containers() {
                     block_domain=line
                     next
                 }
-                in_block && /reverse_proxy/ && index($0, port) {
+                # sólo líneas de reverse_proxy no comentadas,
+                # dentro de un bloque cuyo nombre NO sea ":<número>"
+                in_block && /^[ \t]*reverse_proxy/ && index($0, port) && block_domain !~ /^:[0-9]+$/ {
                     print block_domain
                     exit
                 }
+                # fin del bloque }
                 in_block && /^\s*}/ {
                     in_block=0
                 }
@@ -112,6 +118,7 @@ tn_list_containers() {
 
     printf "  ${BOLD}%2d)${NC} %s\n" "0" "<- Regresar al Menu"
 }
+
 # Verifica que el dominio responde con 200 o 301. Devuelve "true" o "false".\
 verify_domain() {
     local domain=$1
