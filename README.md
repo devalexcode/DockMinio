@@ -33,7 +33,7 @@
 ```plaintext
 /DockMinio
 ├── run.sh              # Script que automatiza la instalación.
-├── README.md               # Documentación del proyecto
+├── README.md           # Documentación del proyecto
 ```
 
 ## Instalación:
