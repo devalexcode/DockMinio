@@ -428,6 +428,9 @@ check_caddy() {
 
 main() {
     print_banner
+
+    check_caddy
+
     echo -e "\n${GREEN}1)${NC} Agregar dominios"
     echo -e "${GREEN}2)${NC} Eliminar dominios"
     echo -e "${GREEN}3)${NC} Salir\n"
