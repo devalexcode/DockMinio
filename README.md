@@ -2,7 +2,7 @@
 
 ![DockMinio](/docs/DockMinio.gif)
 
-**DockMinio** es un script Bash que automatiza la configuración de Caddy como reverse - proxy para aplicaciones Docker lo cual permite de una manera muy sencilla vincular aplicaciones a un dominio y cifrar el trafico mediante SSL (HTTPS).
+**DockMinio** es un script Bash que automatiza la configuración de Caddy como reverse - proxy para aplicaciones Docker lo cual permite de una manera muy sencilla vincular aplicaciones a un dominio y cifrar el tráfico mediante SSL (HTTPS).
 
 ## Permite:
 
