@@ -284,7 +284,7 @@ admin_containers() {
     while ((attempt <= CHECK_DOMAIN_MAX_ATTEMPTS)); do
         echo -e "Verificando acceso a la aplicación, esto suele durar unos minutos 🌐 ........ (Se paciente, puedes ir probando en tu navegador 🧑‍💻)"
 
-        if verify_domain $domain 15; then
+        if verify_domain $domain 30; then
             valid=1
             break
         fi
