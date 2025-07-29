@@ -220,7 +220,7 @@ msg_confirm() {
 }
 
 #---------------------------------------------------------------------
-#   Agregar dominios a con
+#   Agregar reverse proxy a contenedor
 #---------------------------------------------------------------------
 admin_containers() {
 
@@ -255,9 +255,17 @@ admin_containers() {
 
     # 3) Ingreso del dominio (bucle hasta dominio válido y disponible)
     while true; do
-        read -rp "Ingresa el dominio a configurar (ej. $cname.midominio.com): " domain
+        read -rp "Ingresa el dominio / subdominio a configurar (ej. $cname.midominio.com): " domain
         if [[ "$domain" =~ ^([A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)+[A-Za-z]{2,}$ ]]; then
-            if ! verify_domain $domain 1; then
+            if ! verify_domain "$domain" 1; then
+
+                # ── Aquí determinamos el valor de cname ───────────────
+                if [[ "$domain" =~ ^[^.]+\.[^.]+$ ]]; then
+                    # Sólo un punto → dominio raíz → cname = "@"
+                    cname="@"
+                fi
+                # ────────────────────────────────────────────────────────
+
                 clear
                 msg_done "Dominio disponible."
                 break
