@@ -269,7 +269,7 @@ admin_containers() {
         fi
     done
 
-    print_domain_table $domain
+    print_domain_table $cname
 
     press_enter
 
